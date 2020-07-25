@@ -5,6 +5,9 @@ I did not invest much time in refactoring or following the guidelines of clean c
 
 Here are some interesting features that implemented in this project: Resource Filesystem(Meshes and textures), Particle animation engine, Simple Physics Engine( just google it SPE Engine ), rendering optimization tree, day/night timeline.
 
+### Scene builder (sandbox is not included)
+Scene builder sandbox was written in C++ Builder, so I'm not sure if i can restore it.
+
 ## Demo is included:
 ![Demo city](https://github.com/RomanBelokurov/DirectXGameEngine_2008/blob/master/Documentation/gamedev_ru_3.jpg)
 ### Controls in demo game: 
