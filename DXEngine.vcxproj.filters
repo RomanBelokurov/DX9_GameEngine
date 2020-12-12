@@ -13,75 +13,87 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\EngineCore">
+      <UniqueIdentifier>{71b899b8-205c-4d54-a54d-c5382ad76053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{90d0d08e-7735-4b54-9138-1b14872450f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{48bad54e-477c-4b42-8d0e-d42df2bd14cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Application\Appclass.cpp">
+      <Filter>Header Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Application\FrameTimer.cpp">
+      <Filter>Header Files\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LHeader\LIGA_AppClass.h">
+    <ClInclude Include="Engine\Setup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\Player\Player.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Core.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\Player\PlayerCamera.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Def.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\Player\PlayerShoot.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_HUD.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Camera.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Input.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Core.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Object.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Def.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Partsys.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_HUD.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Physics.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Input.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_PP_Bloom.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Object.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_QuadTree.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Partsys.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_ResMan.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Physics.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_SaveLoad.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_PP_Bloom.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Setup.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_QuadTree.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Sky.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_ResMan.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Terrain.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_SaveLoad.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Timer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Sky.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\LIGA_Trigger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\EngineCore\LIGA_Terrain.h">
+      <Filter>Header Files\EngineCore</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\Player.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\Application\Appclass.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="LHeader\PlayerCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LHeader\PlayerShoot.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Engine\Application\FrameTimer.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,9 +11,13 @@ struct WAP
 	{
         D3DXMATRIX mm1,mm2,mm3,mrot,mResc,mTrans;
 		D3DXMatrixTranslation(&mTrans,Position.x,Position.y,Position.z);
-		D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(0.0f));
-		D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(0.0f));
-		D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(0.0f));
+
+		D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+		D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(0.0f));
+		D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(0.0f));
+		D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(0.0f));
 		mrot=mm3*mm1*mm2;
 		D3DXMatrixScaling(&mResc,1.0f,1.0f,1.0f);
 		World=mrot*mResc*mTrans;
@@ -36,9 +40,13 @@ struct LI_MODEL
 	void UpdateRotationMatrix()
 	{
 		D3DXMATRIX mm1,mm2,mm3;
-		D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(Rot.x));
-		D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(Rot.y));
-		D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(Rot.z));
+		D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+
+		D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(Rot.x));
+		D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(Rot.y));
+		D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(Rot.z));
 		mRotation=mm3*mm1*mm2;	
 	}
 
@@ -92,9 +100,12 @@ struct LI_MODEL
 	{
 		D3DXMATRIX mm1,mm2,mm3,mrot,mResc,mTrans;
 		D3DXMatrixTranslation(&mTrans,Pos.x,Pos.y,Pos.z);
-		D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(Rot.x));
-		D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(Rot.y));
-		D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(Rot.z));
+		D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+		D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(Rot.x));
+		D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(Rot.y));
+		D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(Rot.z));
 		mrot=mm3*mm1*mm2;
 		D3DXMatrixScaling(&mResc,Scal.x,Scal.y,Scal.z);
 		Matr=mrot*mResc*mTrans;
@@ -167,9 +178,12 @@ struct LI_PHY
 	{
 		D3DXMATRIX mm1,mm2,mm3,mrot,mResc,mTrans;
 		D3DXMatrixTranslation(&mTrans,BodyPos.x,BodyPos.y,BodyPos.z);
-		D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(BodyRot.x));
-		D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(BodyRot.y));
-		D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(BodyRot.z));
+		D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+		D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(BodyRot.x));
+		D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(BodyRot.y));
+		D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(BodyRot.z));
 		mrot=mm3*mm1*mm2;
 		D3DXMatrixScaling(&mResc,BodyScal.x,BodyScal.y,BodyScal.z);
 		PhysMatr=mrot*mResc*mTrans;

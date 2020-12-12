@@ -7,7 +7,7 @@
 #define __LGS_TERRAIN__H__
 
 # include <dxfile.h>
-#include "LHeader\LIGA_QuadTree.h"
+#include "LIGA_QuadTree.h"
 
 # define VERTEXFORMAT		(D3DFVF_XYZ | D3DFVF_TEX1 )
 
@@ -174,7 +174,8 @@ public:
 			exit(0);
 		}
 		TerrainEffect->SetTechnique( "TerrainTech" );
-		TerrainEffect->SetVector("LightColor", &D3DXVECTOR4(1.0f,1.0f,1.0f,1.0f));
+		D3DXVECTOR4 LightColor(1.0f, 1.0f, 1.0f, 1.0f);
+		TerrainEffect->SetVector("LightColor", &LightColor);
     }
 
 	void BildTerrain(LPDIRECT3DDEVICE9 dev, const char *hmapfile,int xgrid,int zgrid,int scale,int Step);
@@ -198,7 +199,11 @@ public:
 
 	void render(DXCamera CAM,BOOL render_quads=FALSE);
 	void render_by_depth(int Depth,DXCamera CAM,BOOL render_quads=FALSE,BOOL DrawShadows=false);
-	void Update(){TerrainEffect->SetVector("LightColor", &D3DXVECTOR4(SKYDOME.LightColor, 1.0f));}
+	void Update()
+	{
+		D3DXVECTOR4 LightColor(SKYDOME.LightColor, 1.0f);
+		TerrainEffect->SetVector("LightColor", &LightColor);
+	}
 	~terragen()
 	{
 		for(int i=0;i<TERRAIN_SCALE;i++)

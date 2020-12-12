@@ -13,7 +13,7 @@
 #include 	<vector>
 using namespace std;
 
-#include	"LHeader/LIGA_Sky.h"
+#include	"LIGA_Sky.h"
 
 #define ReleaseCOM(x) { if(x){ x->Release();x = 0; } }
 #define V3 D3DXVECTOR3
@@ -156,10 +156,14 @@ void Object::DrawWithLight(LPDIRECT3DDEVICE9 g_pd3dDevice,DXCamera ActiveCamera,
 void Object::UpdatePosAABB()
 {
 	D3DXMATRIX mm1,mm2,mm3,mrot,mResc,mTrans;
+	D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+	D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+
 	D3DXMatrixTranslation(&mTrans,Position.x,Position.y,Position.z);
-	D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(Rotation.x));
-	D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(Rotation.y));
-	D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(Rotation.z));
+	D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(Rotation.x));
+	D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(Rotation.y));
+	D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(Rotation.z));
 	mrot=mm3*mm1*mm2;
 	D3DXMatrixScaling(&mResc,Scalling.x,Scalling.y,Scalling.z);
 	World=mrot*mResc*mTrans;
@@ -224,10 +228,13 @@ void MakeAllObjectsColisional()
 	{
 		if(OBJECT_VECTOR[i].Colide)
 		{
-			//1 Convert to progressive mesh			
-			D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(OBJECT_VECTOR[i].Rotation.x));
-			D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(OBJECT_VECTOR[i].Rotation.y));
-			D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(OBJECT_VECTOR[i].Rotation.z));
+			//1 Convert to progressive mesh		
+			D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+			D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+			D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+			D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(OBJECT_VECTOR[i].Rotation.x));
+			D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(OBJECT_VECTOR[i].Rotation.y));
+			D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(OBJECT_VECTOR[i].Rotation.z));
 			D3DXMatrixScaling(&mResc,OBJECT_VECTOR[i].Scalling.x,OBJECT_VECTOR[i].Scalling.y,OBJECT_VECTOR[i].Scalling.z);
 			mrot=mm3*mm1*mm2;
 			mat=mrot*mResc;
@@ -273,9 +280,12 @@ void MakeAllObjectsColisional()
 	
 	if(INDEP_OBJ.size()>0)
 	{
-		D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(INDEP_OBJ[0].Rotation.x));
-		D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(INDEP_OBJ[0].Rotation.y));
-		D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(INDEP_OBJ[0].Rotation.z));
+		D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+		D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(INDEP_OBJ[0].Rotation.x));
+		D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(INDEP_OBJ[0].Rotation.y));
+		D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(INDEP_OBJ[0].Rotation.z));
 		D3DXMatrixScaling(&mResc,INDEP_OBJ[0].Scalling.x,INDEP_OBJ[0].Scalling.y,INDEP_OBJ[0].Scalling.z);
 		mrot=mm3*mm1*mm2;
 		mat=mrot*mResc;

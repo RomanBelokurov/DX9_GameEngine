@@ -1,7 +1,7 @@
 #ifndef __LGS_SKY__H__
 #define __LGS_SKY__H__
 
-#include "LHeader\LIGA_Camera.h"
+#include "LIGA_Camera.h"
 
 const char *SKY_SCATER_EFF="\
 float4x4  WorldViewProj;\
@@ -94,7 +94,7 @@ public:
 	
 	void ReloadShadowmap()
 	{
-		D3DXSaveTextureToFile("D:\\shadow.jpg",D3DXIFF_JPG,m_Shadowmap,NULL);
+		D3DXSaveTextureToFile("D:\\shadow.jpg", D3DXIFF_JPG, m_Shadowmap,NULL);
 	}
 public:
 	ID3DXEffect *m_Effect;
@@ -138,14 +138,19 @@ public:
 	void EndMap();
 	void SetLight();
 	void Update();
-	void UpdLightDir(){	D3DXMatrixLookAtLH( &View, &(LightPosition+VP1Camera.pos()), &VP1Camera.pos(), &D3DXVECTOR3(0.0f, 1.0f, 0.0f));}
+	void UpdLightDir()
+	{	
+		D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
+		D3DXVECTOR3 LightCamPos = LightPosition + VP1Camera.pos();
+		D3DXMatrixLookAtLH( &View, &LightCamPos, &VP1Camera.pos(), &pUp);
+	}
     void LoadCloudTexture(const char* filename);
 	void SetCloudSpeed(int speed){cloudspeed=speed*0.0001f;}
 
 	void SetTime(float Hour)
 	{
 		float d=Hour/100;
-		SkyEffect->SetVector("SunDir",&D3DXVECTOR4(0.0,1.0-d,d,0.0f));
+		SkyEffect->SetVector("SunDir", new D3DXVECTOR4(0.0,1.0-d,d,0.0f));
 	}
 
 	void SetSunScale(float Scale)
@@ -185,8 +190,10 @@ bool SkyDome::Init_Sky(LPDIRECT3DDEVICE9  g_pd3dDevice)
 	SkyEffect->SetTexture("sTexture",Scatering);
 	SkyEffect->SetTexture("Clouds",NULL);
 	scale=10.0f;
-	hour=12.0f;
-	SetTime(12.0f);
+	
+	hour=16.0f;
+	SetTime(hour);
+	
 	cloudspeed=0.0005f;
 	cloudtexpos=0.0f;
 	SetAlphaClouds(45);
@@ -241,11 +248,17 @@ bool SkyDome::Init_Shadow()
 
 void SkyDome::SetLight()
 {
-	m_Effect->SetVector("MtrlColor", &D3DXVECTOR4(LightColor, 1.0f)) ;
-	m_Effect->SetVector("LPosition", &D3DXVECTOR4(LightPosition, 1.0f)) ;
-	Lightmap_Effect->SetVector("MtrlColor", &D3DXVECTOR4(LightColor, 1.0f)) ;
-	Lightmap_Effect->SetVector("LPosition", &D3DXVECTOR4(LightPosition, 1.0f)) ;
-	D3DXMatrixLookAtLH( &View, &LightPosition, &VP1Camera.pos(), &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+	D3DXVECTOR4 _materialColor(LightColor, 1.0f);
+	m_Effect->SetVector("MtrlColor", &_materialColor);
+
+	D3DXVECTOR4 _lightPosition(LightPosition, 1.0f);
+	m_Effect->SetVector("LPosition",  &_lightPosition) ;
+
+	Lightmap_Effect->SetVector("MtrlColor", &_materialColor);
+	Lightmap_Effect->SetVector("LPosition", &_lightPosition);
+
+	D3DXVECTOR3 pUp(0.0f, 1.0f, 0.0f);
+	D3DXMatrixLookAtLH( &View, &LightPosition, &VP1Camera.pos(), &pUp);
 	D3DXMatrixOrthoLH( &Proj, 100.0f, 100.0f, 1.0f, 1000.0f );
 	m_Effect->CommitChanges();
 	Lightmap_Effect->CommitChanges();
@@ -256,13 +269,17 @@ void SkyDome::Update()
 	D3DXMATRIX World;
 	VPORT1->GetTransform(D3DTS_WORLD, &World);
 	m_Effect->SetMatrix( "MatViewerWorld", &World);
-	m_Effect->SetMatrix( "MatViewerWVP", &(World * VP1Camera.viewProj()));
-	m_Effect->SetMatrix( "MatLightWVP", &(World * View * Proj) );
+
+	D3DXMATRIX worldCamera = World * VP1Camera.viewProj();
+	m_Effect->SetMatrix( "MatViewerWVP", &worldCamera);
+
+	D3DXMATRIX worldViewProjection = World * View * Proj;
+	m_Effect->SetMatrix( "MatLightWVP", &worldViewProjection);
 	m_Effect->CommitChanges();
 
 	Lightmap_Effect->SetMatrix( "MatViewerWorld", &World);
-	Lightmap_Effect->SetMatrix( "MatViewerWVP", &(World * VP1Camera.viewProj()));
-	Lightmap_Effect->SetMatrix( "MatLightWVP", &(World * View * Proj) );
+	Lightmap_Effect->SetMatrix( "MatViewerWVP", &worldCamera);
+	Lightmap_Effect->SetMatrix( "MatLightWVP", &worldViewProjection);
 	Lightmap_Effect->CommitChanges();
 }
 
@@ -280,9 +297,14 @@ void SkyDome::Draw()
 
 	D3DXMATRIX mTrans;
 	D3DXMATRIX World,mm1,mm2,mm3,mrot,mResc;
-	D3DXMatrixRotationAxis(&mm1, &V3(1,0,0), DEG_TO_RAD(-90));
-	D3DXMatrixRotationAxis(&mm2, &V3(0,1,0), DEG_TO_RAD(rotation));
-	D3DXMatrixRotationAxis(&mm3, &V3(0,0,1), DEG_TO_RAD(0));
+
+	D3DXVECTOR3 _x(1.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 _y(0.0f, 1.0f, 0.0f);
+	D3DXVECTOR3 _z(0.0f, 0.0f, 1.0f);
+	D3DXMatrixRotationAxis(&mm1, &_x, DEG_TO_RAD(-90));
+	D3DXMatrixRotationAxis(&mm2, &_y, DEG_TO_RAD(rotation));
+	D3DXMatrixRotationAxis(&mm3, &_z, DEG_TO_RAD(0));
+	
 	mrot=mm3*mm1*mm2;
 	D3DXMatrixScaling(&mResc,scale,scale,scale);
 	D3DXMatrixTranslation(&mTrans,VP1Camera.pos().x,VP1Camera.pos().y,VP1Camera.pos().z);
@@ -292,7 +314,9 @@ void SkyDome::Draw()
 	SkyEffect->SetFloat( "Hour", hour );
 	cloudtexpos=cloudtexpos+cloudspeed;if(cloudtexpos>1.0f)cloudtexpos=0.0f;
 	SkyEffect->SetFloat( "CloudSpeed", cloudtexpos );
-	SkyEffect->SetMatrix( "WorldViewProj", &(World * VP1Camera.mViewProj) );
+
+	D3DXMATRIX WorldViewProjection = World * VP1Camera.mViewProj;
+	SkyEffect->SetMatrix( "WorldViewProj", &WorldViewProjection);
 
 	SkyEffect->Begin(0, 0);
 	SkyEffect->BeginPass(0);

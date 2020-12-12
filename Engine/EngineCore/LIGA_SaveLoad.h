@@ -57,7 +57,7 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	fread(&int_data3,sizeof(int),1,FIN); SKYDOME.SetAlphaClouds(int_data3); 
 
 	SKYDOME.LightColor=V3(float_data1,float_data2,float_data3);
-	SKYDOME.LightPosition=SphereTrans(V3(0,0,0),V3(0.0f,0.0f,-700.0f),V3(int_data1,int_data2,int_data1));
+	SKYDOME.LightPosition=SphereTrans(V3(0,0,0),V3(0.0f,100.0f,-700.0f),V3(int_data1,int_data2,int_data1));
 	SKYDOME.rotation=int_data2;
 	SKYDOME.SetTime(int_data1);
 	SKYDOME.SetLight();
@@ -301,37 +301,7 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 		INDEP_OBJ.push_back(OBJECT);
 	}
 //*************************
-TRIGGER_VECTOR.clear();
 fread(&d1,sizeof(int),1,FIN);
-if(d1>0)
-{
-	Trigger tmp(V3(0,0,0));
-	for(int i=0;i<d1;i++)
-	{
-		fread(&tmp.TriggerBox.minPt,sizeof(V3),1,FIN);
-		fread(&tmp.TriggerBox.maxPt,sizeof(V3),1,FIN);
-
-		fread(&int_data1,sizeof(int),1,FIN);
-		tmp.Type=int_data1;
-
-		fread(&RecordLength,sizeof(int),1,FIN);RecordString="";
-		for(int j=0;j<RecordLength;j++)
-		{
-			fread(&ch,sizeof(char),1,FIN);
-			RecordString=RecordString+ch;
-		}
-		tmp.TriggerTitle=RecordString;
-
-		fread(&RecordLength,sizeof(int),1,FIN);RecordString="";
-		for(int j=0;j<RecordLength;j++)
-		{
-			fread(&ch,sizeof(char),1,FIN);
-			RecordString=RecordString+ch;
-		}
-		tmp.SceneFileName=RecordString;
-		TRIGGER_VECTOR.push_back(tmp);
-	}
-}
 //*************************
 	if(FIN!=NULL)fclose(FIN);
 	SortObjectsInQuads();

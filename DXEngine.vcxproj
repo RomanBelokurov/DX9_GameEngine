@@ -91,6 +91,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\Development\EngineRework\DXEngine\SPESDK\include;D:\Development\EngineRework\DXEngine\DXSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,30 +144,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Application\Appclass.cpp" />
+    <ClCompile Include="Engine\Application\FrameTimer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LHeader\LIGA_AppClass.h" />
-    <ClInclude Include="LHeader\LIGA_Camera.h" />
-    <ClInclude Include="LHeader\LIGA_Core.h" />
-    <ClInclude Include="LHeader\LIGA_Def.h" />
-    <ClInclude Include="LHeader\LIGA_HUD.h" />
-    <ClInclude Include="LHeader\LIGA_Input.h" />
-    <ClInclude Include="LHeader\LIGA_Object.h" />
-    <ClInclude Include="LHeader\LIGA_Partsys.h" />
-    <ClInclude Include="LHeader\LIGA_Physics.h" />
-    <ClInclude Include="LHeader\LIGA_PP_Bloom.h" />
-    <ClInclude Include="LHeader\LIGA_QuadTree.h" />
-    <ClInclude Include="LHeader\LIGA_ResMan.h" />
-    <ClInclude Include="LHeader\LIGA_SaveLoad.h" />
-    <ClInclude Include="LHeader\LIGA_Setup.h" />
-    <ClInclude Include="LHeader\LIGA_Sky.h" />
-    <ClInclude Include="LHeader\LIGA_Terrain.h" />
-    <ClInclude Include="LHeader\LIGA_Timer.h" />
-    <ClInclude Include="LHeader\LIGA_Trigger.h" />
-    <ClInclude Include="LHeader\Player.h" />
-    <ClInclude Include="LHeader\PlayerCamera.h" />
-    <ClInclude Include="LHeader\PlayerShoot.h" />
+    <ClInclude Include="Engine\Application\Appclass.h" />
+    <ClInclude Include="Engine\Application\FrameTimer.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Camera.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Core.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Def.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_HUD.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Input.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Object.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Partsys.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Physics.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_PP_Bloom.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_QuadTree.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_ResMan.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_SaveLoad.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Sky.h" />
+    <ClInclude Include="Engine\EngineCore\LIGA_Terrain.h" />
+    <ClInclude Include="Engine\Player\Player.h" />
+    <ClInclude Include="Engine\Player\PlayerCamera.h" />
+    <ClInclude Include="Engine\Player\PlayerShoot.h" />
+    <ClInclude Include="Engine\Setup.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

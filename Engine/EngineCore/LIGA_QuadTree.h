@@ -1,7 +1,7 @@
 #ifndef __LGS_QUAD_TREE__H__
 #define __LGS_QUAD_TREE__H__
 
-#include "LHeader\LIGA_Object.h"
+#include "LIGA_Object.h"
 
 
 # define QUADTREE_HI 200.0f
