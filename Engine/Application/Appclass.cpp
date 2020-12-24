@@ -34,7 +34,6 @@ void Appclass::Initialize(HINSTANCE hInstance, BOOL ShowCursor, WNDPROC MsgProc,
 	UpdateWindow(hWnd);
 }
 
-
 void Appclass::Run()
 {
 	MSG msg = {};

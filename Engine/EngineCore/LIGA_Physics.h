@@ -41,7 +41,7 @@ void LoadMesh(IDirect3DDevice9* pd3dDevice, LPD3DXMESH &pMesh, TCHAR* xFileName,
 	D3DXLoadMeshFromX(xFileName, D3DXMESH_MANAGED, pd3dDevice, NULL, NULL, NULL, &num, &tempMesh);
 
 	tempMesh->CloneMeshFVF( tempMesh->GetOptions() | D3DXMESH_32BIT, DXFVF, pd3dDevice, &pMesh );
-	ReleaseCOM( tempMesh );
+	tempMesh->Release();
 
 	D3DXComputeNormals(pMesh, 0);	
 	DXVERTEX *dxvb;

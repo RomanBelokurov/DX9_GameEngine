@@ -83,9 +83,9 @@ void DInputMgr::InitializeDirectInput(HINSTANCE appInstance,
 
 DInputMgr::~DInputMgr()
 {
-	ReleaseCOM(mDInput);
-	ReleaseCOM(mKeyboard);
-	ReleaseCOM(mMouse);
+	mDInput->Release();
+	mKeyboard->Release();
+	mMouse->Release();
 }
 
 void DInputMgr::poll()

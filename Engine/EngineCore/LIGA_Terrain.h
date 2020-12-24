@@ -165,9 +165,9 @@ public:
 
 public:
 	void Init()
-	{
+	{		
 		LPD3DXBUFFER pBufferErrors = NULL;
-		if(FAILED(D3DXCreateEffect( VPORT1,TERRAIN_EFF,strlen(TERRAIN_EFF),NULL,NULL,NULL,NULL,&TerrainEffect,&pBufferErrors )))
+		if(FAILED(D3DXCreateEffect(dx9Driver.VPORT1,TERRAIN_EFF,strlen(TERRAIN_EFF),NULL,NULL,NULL,NULL,&TerrainEffect,&pBufferErrors )))
 		{
 			LPVOID pErrors = pBufferErrors->GetBufferPointer();
 			MessageBox(NULL, (const char*)pErrors, ERROR, MB_OK | MB_ICONERROR );
@@ -280,10 +280,10 @@ for(int c=0;c<scale;c++)
 	TERRAIN_LOADED_ALLREADY=TRUE;
 }
 
-V2 GetTextureParams(LPDIRECT3DDEVICE9 dev,char* Filename)
+D3DXVECTOR2 GetTextureParams(LPDIRECT3DDEVICE9 dev,char* Filename)
 {
 	LPDIRECT3DTEXTURE9 heightmap;
-	V2 tmp;
+	D3DXVECTOR2 tmp;
 	D3DSURFACE_DESC dsc;
 
 	D3DXCreateTextureFromFile( dev, Filename, &heightmap);

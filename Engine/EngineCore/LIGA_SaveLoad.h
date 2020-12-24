@@ -18,8 +18,8 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 {
 	DXSprite splash;
 	DXText text_data;
-	splash.LoadSprite(VPORT1,SplashFileName,RConf.screenWidth-150,RConf.screenHeight-150,D3DCOLOR_XRGB(0,0,0));
-	text_data.Setup2DFont(VPORT1, "Arial",20, FW_NORMAL); 
+	splash.LoadSprite(dx9Driver.VPORT1,SplashFileName, dx9Driver.RConf.screenWidth-150, dx9Driver.RConf.screenHeight-150,D3DCOLOR_XRGB(0,0,0));
+	text_data.Setup2DFont(dx9Driver.VPORT1, "Arial",20, FW_NORMAL);
 
 	RMLoad.CLEAN();
 	TERRAIN_LOADED_ALLREADY=FALSE;
@@ -35,10 +35,10 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	int d1,d2;
 	byte b;
 
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
 		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Sun & Sky parameters",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+		text_data.Draw2DText("Loading: Sun & Sky parameters",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 
 	FILE *FIN,*FOUT;
@@ -57,7 +57,7 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	fread(&int_data3,sizeof(int),1,FIN); SKYDOME.SetAlphaClouds(int_data3); 
 
 	SKYDOME.LightColor=V3(float_data1,float_data2,float_data3);
-	SKYDOME.LightPosition=SphereTrans(V3(0,0,0),V3(0.0f,100.0f,-700.0f),V3(int_data1,int_data2,int_data1));
+	SKYDOME.LightPosition = SphereTrans(V3(0,0,0),V3(0.0f,0.0f,-700.0f),V3(int_data1,int_data2,int_data1));
 	SKYDOME.rotation=int_data2;
 	SKYDOME.SetTime(int_data1);
 	SKYDOME.SetLight();
@@ -74,27 +74,30 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	}
 
 //******************************************************************************
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Fog parameters",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Loading: Fog parameters",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 	fread(&float_data1,sizeof(float),1,FIN);
 	fread(&float_data2,sizeof(float),1,FIN);
 	fread(&float_data3,sizeof(float),1,FIN);
-	GLOBAL_FOG_COLOR=V3(float_data1,float_data2,float_data3);
+	
+	D3DXVECTOR3 GLOBAL_FOG_COLOR=V3(float_data1,float_data2,float_data3);
 
 	fread(&int_data1,sizeof(int),1,FIN);
 	fread(&int_data2,sizeof(int),1,FIN);
-	GLOBAL_FOG_MIN=int_data1;GLOBAL_FOG_MAX=int_data2;
-	SetFog(VPORT1,D3DCOLOR_XRGB((int)GLOBAL_FOG_COLOR.x,(int)GLOBAL_FOG_COLOR.y,(int)GLOBAL_FOG_COLOR.z),GLOBAL_FOG_MIN,GLOBAL_FOG_MAX);
+	int GLOBAL_FOG_MIN=int_data1;
+	int GLOBAL_FOG_MAX=int_data2;
+	
+	dx9Driver.SetFog(D3DCOLOR_XRGB((int)GLOBAL_FOG_COLOR.x,(int)GLOBAL_FOG_COLOR.y,(int)GLOBAL_FOG_COLOR.z),GLOBAL_FOG_MIN,GLOBAL_FOG_MAX);
 
 
 //************************ TERRAIN_SYSTEM **************************************
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Terrain generation",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Loading: Terrain generation",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 	fread(&TERRAIN_FOV,sizeof(int),1,FIN);
 	fread(&fsize1,sizeof(int),1,FIN);
@@ -141,8 +144,8 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	
 	if(d1+d2>0)
 	{
-		CreateTerrainPhysics(VPORT1,"~temp_hm", d1,d2, int_data1);
-		Terr.BildTerrain(VPORT1,"~temp_hm",d1,d2,int_data2,int_data1);
+		CreateTerrainPhysics(dx9Driver.VPORT1,"~temp_hm", d1,d2, int_data1);
+		Terr.BildTerrain(dx9Driver.VPORT1,"~temp_hm",d1,d2,int_data2,int_data1);
 		Terr.LoadTextures("~temp_blend","~temp_layer1","~temp_layer2","~temp_layer3");
 		FIND_SELF_IN_TERRAIN(VP1Camera,TERRAIN_FOV);
 	}
@@ -154,10 +157,10 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 
 //**************************** RESOURCEMANAGER_SYSTEM **************************
 //MESHES
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Resource manager(meshes)",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Loading: Resource manager(meshes)",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 	int RecordLength=0,p;
 	string RecordString="",FirstPart="";
@@ -184,10 +187,10 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	}
 
 //TEXTURES
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Resource manager(textures)",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Loading: Resource manager(textures)",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 	fread(&d1,sizeof(int),1,FIN);
 	for(int i=0;i<d1;i++)
@@ -212,10 +215,10 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 //******************************************************************************
 
 //************************** OBJECT VECTOR LOAD ********************************
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Objects",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Loading: Objects",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 	Object OBJECT;
 	fread(&d1,sizeof(int),1,FIN);
@@ -224,7 +227,7 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	{
 		fread(&int_data1,sizeof(int),1,FIN);
 		OBJECT.MeshID=int_data1;		
-		OBJECT.ComputeBoundingBox(VPORT1,RMLoad);
+		OBJECT.ComputeBoundingBox(dx9Driver.VPORT1,RMLoad);
 		OBJECT.Colide=TRUE;
 		OBJECT.DropShadow=FALSE;
 
@@ -261,17 +264,17 @@ ResourceManager LoadScene(ResourceManager RMLoad, const char* Filename, const ch
 	}	
 //******************************************************************************
 // INDEPENDENT ROAD LOADING
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Loading: Additional parameters",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Loading: Additional parameters",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 
 	fread(&d1,sizeof(int),1,FIN);
 	if(d1>0)
 	{
 		fread(&int_data1,sizeof(int),1,FIN);
 		OBJECT.MeshID=int_data1;
-		OBJECT.ComputeBoundingBox(VPORT1,RMLoad);
+		OBJECT.ComputeBoundingBox(dx9Driver.VPORT1,RMLoad);
 
 		fread(&int_data2,sizeof(int),1,FIN);
 		OBJECT.TextureLayer_0.clear();
@@ -306,10 +309,10 @@ fread(&d1,sizeof(int),1,FIN);
 	if(FIN!=NULL)fclose(FIN);
 	SortObjectsInQuads();
 	
-	Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
-		splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
-		text_data.Draw2DText("Physics initialising... Please wait",75,RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
-	End();
+	dx9Driver.Begin(D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0));
+	splash.DrawSprite(V3(75,75,0),D3DCOLOR_XRGB(255,255,255));
+	text_data.Draw2DText("Physics initialising... Please wait",75, dx9Driver.RConf.screenHeight*0.93f,D3DCOLOR_XRGB(0,155,255));
+	dx9Driver.End();
 	return RMLoad;
 }
 

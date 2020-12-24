@@ -118,7 +118,7 @@ public:
 		{
 			case(LASER):
 			{
-				DrawLine(VPORT1,FS1,TOS1,D3DCOLOR_XRGB(255,255,255));
+				//DrawLine(dx9Driver.VPORT1,FS1,TOS1,D3DCOLOR_XRGB(255,255,255));
 				break;
 			}
 			case(BULET12MM):

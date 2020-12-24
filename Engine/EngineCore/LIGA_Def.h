@@ -1,9 +1,5 @@
 #define DEG_TO_RAD(ang) ((ang)*D3DX_PI/180)		//макрос конверта градус-радиан
 #define RAD_TO_DEG(ang) ((ang)*180/D3DX_PI)		//макрос конверта радиан-градус
-#define ReleaseCOM(x) { if(x){ x->Release();x = 0; } }
-
-#define V2 D3DXVECTOR2
-#define V3 D3DXVECTOR3
 
 
 struct AABB
@@ -39,6 +35,7 @@ struct AABB
 		out.minPt = c - e;
 		out.maxPt = c + e;
 	}
+	
 	bool PointInBox(D3DXVECTOR3 *pos)
 	{
 		if(minPt.x <= pos->x && maxPt.x >= pos->x)
@@ -78,3 +75,19 @@ struct AABB
 	D3DXVECTOR3 minPt;
 	D3DXVECTOR3 maxPt;
 };
+
+
+D3DXVECTOR3 SphereTrans(D3DXVECTOR3 RotationPoint, D3DXVECTOR3 Point, D3DXVECTOR3 Angle)
+{
+	D3DXVECTOR3 Vect;
+	D3DXMATRIX m1, m2, m3, m;
+	Vect = Point - RotationPoint;
+
+	D3DXMatrixRotationX(&m1, D3DXToRadian(Angle.x));
+	D3DXMatrixRotationY(&m2, D3DXToRadian(Angle.y));
+	D3DXMatrixRotationZ(&m3, D3DXToRadian(Angle.z));
+	m = m3 * m1 * m2;
+	D3DXVec3TransformCoord(&Vect, &Vect, &m);
+	Point = Vect + RotationPoint;
+	return Point;
+} 

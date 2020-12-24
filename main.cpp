@@ -18,7 +18,7 @@ LRESULT WINAPI ProcessMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 					ACam.CameraChange();
 					break;
 		
-				case VK_F2:
+				/*case VK_F2:
 					if (RConf.postProcess)RConf.postProcess = false; else RConf.postProcess = true;
 					break;
 		
@@ -32,7 +32,7 @@ LRESULT WINAPI ProcessMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 		
 				case VK_F5:
 					if (PLAYER_FRONT_WEAPON == 0)PLAYER_FRONT_WEAPON = 1; else PLAYER_FRONT_WEAPON = 0;
-					break;
+					break;*/
 			}
 			break;
 		}
@@ -47,6 +47,9 @@ LRESULT WINAPI ProcessMessages(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 
 class myGame : public Appclass
 {
+	private:
+		
+
 	public:
 		void INIT(HWND hWnd, HINSTANCE hInst);
 		void UPDATE_SCENE();
@@ -57,23 +60,24 @@ class myGame : public Appclass
 
 void myGame::INIT(HWND hWnd, HINSTANCE hInst)
 {
-	LE_Init_Engine(hWnd, hInst, "render.cfg");
+	dx9Driver.InitDriver(hWnd);
 	
-	SYS_INPUT.InitializeDirectInput(hInst, hWnd, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
+	/*SYS_INPUT.InitializeDirectInput(hInst, hWnd, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 	
 	VP1Camera.pos() = D3DXVECTOR3(0.0f, 30.0f, 0.0f);
-	VP1Camera.setLens(VPORT1, 90.0f, RConf.screenWidth / RConf.screenHeight, 0.1f, 3000.0f);
+	VP1Camera.setLens(dx9Driver.VPORT1, 90.0f, dx9Driver.RConf.screenWidth / dx9Driver.RConf.screenHeight, 0.1f, 3000.0f);
 	VP1Camera.setSpeed(5.0f);
 	VP1Camera.update(D3DXVECTOR3(0.0f, 0.0f, 0.0f), DEG_TO_RAD(0), DEG_TO_RAD(0), 0.05f, 0);
-	RM.SetDevice(VPORT1);
+	RM.SetDevice(dx9Driver.VPORT1);
+
 
 	Init_Physics();
 	
 	Terr.Init();
 	VP1Camera.update(D3DXVECTOR3(0.0f, 0.0f, 0.0f), DEG_TO_RAD(0), DEG_TO_RAD(0), 0.05f, 0);
 
-	RConf.postProcess = BLOOMEFFECT.Create(VPORT1);
-	RConf.dynamicSky = SKYDOME.Init_Sky(VPORT1);
+	dx9Driver.RConf.postProcess = BLOOMEFFECT.Create(dx9Driver.VPORT1);
+	dx9Driver.RConf.dynamicSky = SKYDOME.Init_Sky(dx9Driver.VPORT1);
 
 	RM = LoadScene(RM, "System\\Scenes\\Scene.scn", "System//splash.jpg");
 	MakeAllObjectsColisional();
@@ -84,13 +88,13 @@ void myGame::INIT(HWND hWnd, HINSTANCE hInst)
 	p1.LoadFront("System\\Actor\\AutoParts\\t0001.lpm");
 	p1.SetPosition(V3(10, 7.0, 0));
 
-	ShootVisuals.InitParticles();
+	ShootVisuals.InitParticles();*/
 }
 
 // scene update before drawing
 void myGame::UPDATE_SCENE() 
 {
-	ACam.Redraw();
+	/*ACam.Redraw();
 
 	SYS_INPUT.poll();
 	if (SYS_INPUT.keyDown(DIK_SPACE))	p1.Brake();
@@ -115,37 +119,37 @@ void myGame::UPDATE_SCENE()
 	}
 
 	pWorld->Update(0.5f);
-	ACam.Update();
+	ACam.Update();*/
 }
 
 // render entire scene
 void myGame::RENDER_SCENE() 
 {
-	Begin(D3DCLEAR_ZBUFFER | D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0));	
-	if (RConf.dynamicSky)SKYDOME.Draw();
+	dx9Driver.Begin(D3DCLEAR_ZBUFFER | D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0));
+	/*if (dx9Driver.RConf.dynamicSky)SKYDOME.Draw();
 
-	Terr.render_by_depth(TERRAIN_FOV, VP1Camera, FALSE, RConf.RenderShadows);
+	Terr.render_by_depth(TERRAIN_FOV, VP1Camera, FALSE, dx9Driver.RConf.RenderShadows);
 
 	for (int i = ter_sx; i < ter_fx; i++)
 		for (int j = ter_sz; j < ter_fz; j++)
-			if (VP1Camera.isVisible(LAND_CHUNK[i][j].Box.minPt, LAND_CHUNK[i][j].Box.maxPt))LAND_CHUNK[i][j].RenderCurrentChunk(RConf.RenderShadows);
+			if (VP1Camera.isVisible(LAND_CHUNK[i][j].Box.minPt, LAND_CHUNK[i][j].Box.maxPt))LAND_CHUNK[i][j].RenderCurrentChunk(dx9Driver.RConf.RenderShadows);
 
 	if (INDEP_OBJ.size() > 0)
 		if (VP1Camera.isVisible(INDEP_OBJ[0].New.minPt, INDEP_OBJ[0].New.maxPt))
-			INDEP_OBJ[0].DrawWithLight(VPORT1, VP1Camera, RM, TRUE);
+			INDEP_OBJ[0].DrawWithLight(dx9Driver.VPORT1, VP1Camera, RM, TRUE);
 
 
 	p1.RenderActor();
 	ShootVisuals.Draw(PLAYER_FRONT_WEAPON);
 
-	if (RConf.postProcess)BLOOMEFFECT.PostProcess(VPORT1);
-	End();
+	if (dx9Driver.RConf.postProcess)BLOOMEFFECT.PostProcess(dx9Driver.VPORT1);*/
+	dx9Driver.End();
 }
 
 //clean buffer
 void myGame::CLEAN() 
 {
-	BLOOMEFFECT.Destroy();
+	//BLOOMEFFECT.Destroy();
 }
 
 

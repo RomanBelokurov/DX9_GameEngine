@@ -109,7 +109,9 @@ void Object::DrawForShadowMap(LPDIRECT3DDEVICE9 g_pd3dDevice,DXCamera ActiveCame
 	{
 		if(RM.RM_MESH[MeshID]!=NULL)RM.RM_MESH[MeshID]->DrawSubset( i );
 	}
-	g_pd3dDevice->SetTransform(D3DTS_WORLD, &RESET);
+	D3DXMATRIX Reset;
+	D3DXMatrixIdentity(&Reset);
+	g_pd3dDevice->SetTransform(D3DTS_WORLD, &Reset);
 	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -148,9 +150,11 @@ void Object::DrawWithLight(LPDIRECT3DDEVICE9 g_pd3dDevice,DXCamera ActiveCamera,
 			SKYDOME.Lightmap_Effect->EndPass();
 			SKYDOME.Lightmap_Effect->End();
 		}
-	g_pd3dDevice->SetTransform(D3DTS_WORLD, &RESET);
-	g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	g_pd3dDevice->SetTexture( 0, 0);
+		D3DXMATRIX Reset;
+		D3DXMatrixIdentity(&Reset);
+		g_pd3dDevice->SetTransform(D3DTS_WORLD, &Reset);
+		g_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		g_pd3dDevice->SetTexture( 0, 0);
 }
 
 void Object::UpdatePosAABB()
@@ -171,7 +175,7 @@ void Object::UpdatePosAABB()
 }
 
 
-void Object::ComputeBoundingBox(LPDIRECT3DDEVICE9 g_pd3dDevice,ResourceManager RM) // возвращает ограничивающий параллелепипед
+void Object::ComputeBoundingBox(LPDIRECT3DDEVICE9 g_pd3dDevice,ResourceManager RM) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 {
 	BYTE* v = 0;
 	if(RM.RM_MESH[MeshID]!=NULL)
@@ -241,7 +245,7 @@ void MakeAllObjectsColisional()
 
 			LPD3DXMESH		pMesh;	
 			LPSPERIGIDBODY	pBody;
-			RM.RM_MESH[OBJECT_VECTOR[i].MeshID]->CloneMeshFVF( RM.RM_MESH[OBJECT_VECTOR[i].MeshID]->GetOptions() | D3DXMESH_32BIT, DXFVF, VPORT1, &pMesh );					
+			RM.RM_MESH[OBJECT_VECTOR[i].MeshID]->CloneMeshFVF( RM.RM_MESH[OBJECT_VECTOR[i].MeshID]->GetOptions() | D3DXMESH_32BIT, DXFVF, dx9Driver.VPORT1, &pMesh );
 			
 			D3DXComputeNormals(pMesh, 0);	
 			DXVERTEX *dxvb;
@@ -292,7 +296,7 @@ void MakeAllObjectsColisional()
 
 		LPD3DXMESH		pMesh;	
 		LPSPERIGIDBODY	pBody;
-		RM.RM_MESH[INDEP_OBJ[0].MeshID]->CloneMeshFVF( RM.RM_MESH[INDEP_OBJ[0].MeshID]->GetOptions() | D3DXMESH_32BIT, DXFVF, VPORT1, &pMesh );					
+		RM.RM_MESH[INDEP_OBJ[0].MeshID]->CloneMeshFVF( RM.RM_MESH[INDEP_OBJ[0].MeshID]->GetOptions() | D3DXMESH_32BIT, DXFVF, dx9Driver.VPORT1, &pMesh );
 
 		D3DXComputeNormals(pMesh, 0);	
 		DXVERTEX *dxvb;

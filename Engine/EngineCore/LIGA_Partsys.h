@@ -29,12 +29,12 @@ struct Particle
 
 struct PartSettings
 {
-	V2 StartRangeX,StartRangeY,StartRangeZ;
-	V2 VelocityRangeX,VelocityRangeY,VelocityRangeZ;
+	D3DXVECTOR2 StartRangeX,StartRangeY,StartRangeZ;
+	D3DXVECTOR2 VelocityRangeX,VelocityRangeY,VelocityRangeZ;
 	float AlphaMin;
-	V2 LifetimeRange;
-	V2 Tex1WH,Tex2WH;
-	V3 SpriteColor;
+	D3DXVECTOR2 LifetimeRange;
+	D3DXVECTOR2 Tex1WH,Tex2WH;
+	D3DXVECTOR3 SpriteColor;
 };
 
 
@@ -72,9 +72,9 @@ public:
 		pSet.VelocityRangeX.x=-0.5f;	pSet.VelocityRangeX.y=0.5f;
 		pSet.VelocityRangeY.x=-0.5f;	pSet.VelocityRangeY.y=0.5f;
 		pSet.VelocityRangeZ.x=-0.5f;	pSet.VelocityRangeZ.y=0.5f;
-		pSet.LifetimeRange=V2(20,50);
+		pSet.LifetimeRange= D3DXVECTOR2(20,50);
 		SystemSpeed=0.5f;
-		Position=V3(0,0,0);
+		Position= D3DXVECTOR3(0,0,0);
 		ExternalForce=V3(0,0,0);
 		Gradation = true;
 		GradLimit = 0.5f;
@@ -85,14 +85,14 @@ public:
 	{
 		SpriteCenter1=V3(width/2,height/2,width/2);
 		pSet.Tex1WH.x=width;pSet.Tex1WH.y=height;
-		D3DXCreateTextureFromFileEx(VPORT1,Filename,width,height,3,0,D3DFMT_UNKNOWN,D3DPOOL_DEFAULT,D3DX_FILTER_LINEAR,D3DX_FILTER_LINEAR,NULL,NULL,NULL,&TextureStart);
+		D3DXCreateTextureFromFileEx(dx9Driver.VPORT1,Filename,width,height,3,0,D3DFMT_UNKNOWN,D3DPOOL_DEFAULT,D3DX_FILTER_LINEAR,D3DX_FILTER_LINEAR,NULL,NULL,NULL,&TextureStart);
 	}
 
 	void Load_2nd_Texture(const char* Filename,int width,int height)
 	{
 		SpriteCenter2=V3(width/2,height/2,width/2);
 		pSet.Tex2WH.x=width;pSet.Tex2WH.y=height;
-		D3DXCreateTextureFromFileEx(VPORT1,Filename,width,height,3,0,D3DFMT_UNKNOWN,D3DPOOL_DEFAULT,D3DX_FILTER_LINEAR,D3DX_FILTER_LINEAR,NULL,NULL,NULL,&TextureEnd);
+		D3DXCreateTextureFromFileEx(dx9Driver.VPORT1,Filename,width,height,3,0,D3DFMT_UNKNOWN,D3DPOOL_DEFAULT,D3DX_FILTER_LINEAR,D3DX_FILTER_LINEAR,NULL,NULL,NULL,&TextureEnd);
 	}
 
 	void UpdateSystem();
@@ -124,7 +124,7 @@ public:
 
 void LiPartSys::CreateSystem(int partDensity)
 {
-	D3DXCreateSprite( VPORT1, &pSprite );
+	D3DXCreateSprite(dx9Driver.VPORT1, &pSprite );
 	PartsNum=partDensity;
 	CreateParticles(partDensity);
 }
@@ -173,11 +173,11 @@ void LiPartSys::UpdateSystem()
 void LiPartSys::RenderSystem()
 {
 	D3DXMATRIX pView,World;
-	VPORT1->GetTransform(D3DTS_VIEW,&pView);	
+	dx9Driver.VPORT1->GetTransform(D3DTS_VIEW,&pView);
 	D3DXMatrixScaling(&World,Scale,Scale,Scale);
 	pSprite->SetWorldViewLH(&World,&pView);
 
-	VPORT1->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
+	dx9Driver.VPORT1->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
 	pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_BILLBOARD );
 	for(int i=0; i<PART.size(); i++)
 	{
@@ -190,7 +190,7 @@ void LiPartSys::RenderSystem()
 		}
 	}
 	pSprite->End();
-	VPORT1->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
+	dx9Driver.VPORT1->SetRenderState( D3DRS_ZWRITEENABLE, TRUE );
 }
 
 

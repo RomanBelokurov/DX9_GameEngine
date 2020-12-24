@@ -24,7 +24,7 @@ struct WAP
 	}
 	void Draw()
 	{
-		DrawBB(VPORT1,Position-V3(0.01f,0.01f,0.01f),Position+V3(0.01f,0.01f,0.01f),D3DCOLOR_XRGB(255,0,0));
+		DrawBB(dx9Driver.VPORT1,Position-V3(0.01f,0.01f,0.01f),Position+V3(0.01f,0.01f,0.01f),D3DCOLOR_XRGB(255,0,0));
     }
 };
 
@@ -54,7 +54,7 @@ struct LI_MODEL
 	{
 		ReleaseCOM(Mesh);
 		Mesh=NULL;
-		D3DXLoadMeshFromX (FileName, D3DXMESH_MANAGED,VPORT1, NULL, NULL,NULL, &MatNum, &Mesh);
+		D3DXLoadMeshFromX (FileName, D3DXMESH_MANAGED, dx9Driver.VPORT1, NULL, NULL,NULL, &MatNum, &Mesh);
 		Textures = new LPDIRECT3DTEXTURE9[MatNum];
 		for( DWORD i=0; i<MatNum; i++ )Textures[i]=NULL;
 	}
@@ -62,7 +62,7 @@ struct LI_MODEL
 	void LoadTexturePart(const char* FileName,int ID)
 	{
 		if(Textures[ID]!=NULL)ReleaseCOM(Textures[ID]);
-		D3DXCreateTextureFromFileEx(VPORT1,FileName,512,512,7,0,D3DFMT_UNKNOWN,D3DPOOL_MANAGED,D3DX_DEFAULT,D3DX_FILTER_LINEAR,NULL,NULL,NULL,&Textures[ID]);
+		D3DXCreateTextureFromFileEx(dx9Driver.VPORT1,FileName,512,512,7,0,D3DFMT_UNKNOWN,D3DPOOL_MANAGED,D3DX_DEFAULT,D3DX_FILTER_LINEAR,NULL,NULL,NULL,&Textures[ID]);
 	}
 
 	void LoadObject(const char* FileName)
@@ -115,8 +115,8 @@ struct LI_MODEL
 	{		
 		if(Mesh!=NULL)
 		{
-			VPORT1->SetTransform (D3DTS_WORLD, &M);
-			if(RConf.RenderShadows)
+			dx9Driver.VPORT1->SetTransform (D3DTS_WORLD, &M);
+			if(dx9Driver.RConf.RenderShadows)
 			{
 				SKYDOME.Update();
 				SKYDOME.m_Effect->Begin( NULL, 0 );
@@ -143,8 +143,9 @@ struct LI_MODEL
 				SKYDOME.Lightmap_Effect->EndPass();
 				SKYDOME.Lightmap_Effect->End();
 			}
-
-			VPORT1->SetTransform (D3DTS_WORLD, &RESET);
+			D3DXMATRIX Reset;
+			D3DXMatrixIdentity(&Reset);
+			dx9Driver.VPORT1->SetTransform (D3DTS_WORLD, &Reset);
 		}		
 	}
 };
@@ -164,14 +165,16 @@ struct LI_PHY
 	
 	void Draw(D3DXMATRIX M)
 	{
-		VPORT1->SetTransform (D3DTS_WORLD, &M);
+		dx9Driver.VPORT1->SetTransform (D3DTS_WORLD, &M);
 		if(phBody!=NULL)
 		{
-			VPORT1->SetTexture( 0, NULL);
+			dx9Driver.VPORT1->SetTexture( 0, NULL);
 			phBody->DrawSubset( 0 );
 		}
-		VPORT1->SetTransform (D3DTS_WORLD, &RESET);
-		VPORT1->SetTexture( 0, NULL);
+		D3DXMATRIX Reset;
+		D3DXMatrixIdentity(&Reset);
+		dx9Driver.VPORT1->SetTransform (D3DTS_WORLD, &Reset);
+		dx9Driver.VPORT1->SetTexture( 0, NULL);
 	}
 
 	void MatrixUpdate()
@@ -264,7 +267,7 @@ public:
 				Cusov.Draw(Cusov.Matr*matWorld);
 				Tower.Draw(Tower.Matr*matWorld);
 				Front.Draw(Front.Matr*matWorld);
-				if(RConf.DrawParticles)
+				if(dx9Driver.RConf.DrawParticles)
 				{
 					Wheel1Foam.UpdateSystem();
 					Wheel2Foam.UpdateSystem();
@@ -277,7 +280,9 @@ public:
 			}
 			else Wheel.Draw(Wheels[i-1].PhysMatr*matWorld);
 		}
-		VPORT1->SetTransform (D3DTS_WORLD, &RESET);		
+		D3DXMATRIX Reset;
+		D3DXMatrixIdentity(&Reset);
+		dx9Driver.VPORT1->SetTransform (D3DTS_WORLD, &Reset);
 	}
 
 	void Gas();
@@ -291,7 +296,7 @@ void Actor::CreatePhysics()
 	LPSPESHAPE pShape=pWorld->CreateShape();
 	//body creation:
 	
-	Body.phBody = LoadMeshActor(VPORT1, Body.phBody , Body.PhysMatr);
+	Body.phBody = LoadMeshActor(dx9Driver.VPORT1, Body.phBody , Body.PhysMatr);
 	InitShape(pShape,Body.phBody);
 	pBodyVehicle=pWorld->AddRigidBody (pShape);
 	pBodyVehicle->UserData=Body.phBody;
@@ -308,7 +313,7 @@ void Actor::CreatePhysics()
 		
 		D3DXMATRIX mat;
 		D3DXMatrixScaling(&mat, Wheels[0].BodyScal.x, Wheels[0].BodyScal.y, Wheels[0].BodyScal.z);
-		Wheels[0].phBody = LoadMeshActor(VPORT1, Wheels[0].phBody , mat);
+		Wheels[0].phBody = LoadMeshActor(dx9Driver.VPORT1, Wheels[0].phBody , mat);
 		Wheels[0].Rescale();
 		Wheels[3]=Wheels[2]=Wheels[1]=Wheels[0]; 
 	pShape->InitializeAsSphere(Wheels[0].BodyScal.x*0.5f);
@@ -376,7 +381,7 @@ void Actor::LoadActor(const char* FileName)
 		FOUT=fopen("tmp.x","wb");
 		for(int i=0; i<fsize; i++) putc(getc(FIN),FOUT);
 		if(FOUT!=NULL)fclose(FOUT);
-		D3DXLoadMeshFromX ("tmp.x", D3DXMESH_MANAGED,VPORT1, NULL, NULL,NULL,NULL, &Body.phBody);
+		D3DXLoadMeshFromX ("tmp.x", D3DXMESH_MANAGED, dx9Driver.VPORT1, NULL, NULL,NULL,NULL, &Body.phBody);
 		remove("tmp.x");
 	}
 
@@ -400,7 +405,7 @@ void Actor::LoadActor(const char* FileName)
 		FOUT=fopen("tmp.x","wb");
 		for(int i=0; i<fsize; i++) putc(getc(FIN),FOUT);
 		if(FOUT!=NULL)fclose(FOUT);
-		D3DXLoadMeshFromX ("tmp.x", D3DXMESH_MANAGED,VPORT1, NULL, NULL,NULL,NULL, &Wheels[0].phBody);
+		D3DXLoadMeshFromX ("tmp.x", D3DXMESH_MANAGED, dx9Driver.VPORT1, NULL, NULL,NULL,NULL, &Wheels[0].phBody);
 		remove("tmp.x");
 	}
 	fread(&float_data1,sizeof(float),1,FIN);

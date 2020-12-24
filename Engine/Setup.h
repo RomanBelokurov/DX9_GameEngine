@@ -1,7 +1,3 @@
-#ifndef _HAS_ITERATOR_DEBUGGING
-#define _HAS_ITERATOR_DEBUGGING 0
-#endif
-
 #ifndef _SECURE_SCL
 #define _SECURE_SCL 0
 #endif
@@ -36,7 +32,10 @@ using namespace std;
 
 //Main objects CORE
 #include	"EngineCore/LIGA_Def.h"					//Engine common definition
-#include	"EngineCore/LIGA_Core.h"					//Engine CORE!!!
+#include	"EngineCore/Driver_DX9.h"
+
+Driver_DX9 dx9Driver;
+
 #include	"EngineCore/LIGA_Camera.h"					//Engine Camera!!!
 #include	"EngineCore/LIGA_Input.h"				
 #include	"EngineCore/LIGA_Physics.h"	
@@ -56,4 +55,7 @@ using namespace std;
 #include	"Player/Player.h"					// PlayerClass
 #include	"Player/PlayerShoot.h"
 #include	"Player/PlayerCamera.h"
+
+
+
 

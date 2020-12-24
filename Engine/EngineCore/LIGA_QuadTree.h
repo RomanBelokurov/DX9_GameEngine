@@ -74,7 +74,7 @@ void CHUNK::RenderCurrentChunk(bool DrawShadows)
 	for(int i=0;i<(int)OBJECT_ID.size();i++)
 	{
 		if(VP1Camera.isVisible(OBJECT_VECTOR[OBJECT_ID[i]].New.minPt,OBJECT_VECTOR[OBJECT_ID[i]].New.maxPt))
-			OBJECT_VECTOR[OBJECT_ID[i]].DrawWithLight(VPORT1,VP1Camera,RM,DrawShadows);
+			OBJECT_VECTOR[OBJECT_ID[i]].DrawWithLight(dx9Driver.VPORT1,VP1Camera,RM,DrawShadows);
 	}
 }
 
@@ -83,7 +83,7 @@ void CHUNK::RenderCurrentChunkFS()
 {
 	for(int i=0;i<(int)OBJECT_ID.size();i++)
 	{
-	 	if(OBJECT_VECTOR[OBJECT_ID[i]].DropShadow)OBJECT_VECTOR[OBJECT_ID[i]].DrawForShadowMap(VPORT1,VP1Camera,RM);
+	 	if(OBJECT_VECTOR[OBJECT_ID[i]].DropShadow)OBJECT_VECTOR[OBJECT_ID[i]].DrawForShadowMap(dx9Driver.VPORT1,VP1Camera,RM);
 	}
 }
 

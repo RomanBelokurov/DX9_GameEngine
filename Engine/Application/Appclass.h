@@ -1,4 +1,6 @@
 #pragma once
+#ifndef __APPCLASS__
+#define __APPCLASS__
 
 #include <tchar.h>
 #include <windows.h>
@@ -10,6 +12,7 @@ class Appclass
 {
 	private:
 		FrameTimer frameTimer;
+
 	public:
 		HWND hwnd;
 
@@ -21,3 +24,4 @@ class Appclass
 		virtual void RENDER_SCENE() = 0;
 		virtual void CLEAN() = 0;
 };
+#endif

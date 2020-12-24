@@ -267,7 +267,7 @@ void SkyDome::SetLight()
 void SkyDome::Update()
 {
 	D3DXMATRIX World;
-	VPORT1->GetTransform(D3DTS_WORLD, &World);
+	device->GetTransform(D3DTS_WORLD, &World);
 	m_Effect->SetMatrix( "MatViewerWorld", &World);
 
 	D3DXMATRIX worldCamera = World * VP1Camera.viewProj();
@@ -324,7 +324,9 @@ void SkyDome::Draw()
 	SkyEffect->EndPass();
 	SkyEffect->End();
 
-	device->SetTransform(D3DTS_WORLD, &RESET);
+	D3DXMATRIX Reset;
+	D3DXMatrixIdentity(&Reset);
+	device->SetTransform(D3DTS_WORLD, &Reset);
 	device->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 	device->SetRenderState(D3DRS_ZENABLE, true);
 }
@@ -332,7 +334,7 @@ void SkyDome::Draw()
 void SkyDome::BeginMap()
 {
 	SwitchTargets(SHADOW);
-	VPORT1->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00FFFFFF, 1.0f, 0L);
+	device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00FFFFFF, 1.0f, 0L);
 	m_Effect->Begin( NULL, 0 );
 	m_Effect->BeginPass( 0 );
 }
@@ -349,18 +351,18 @@ void SkyDome::SwitchTargets(DWORD mode)
 	if(mode == SHADOW)
 	{
 		LPDIRECT3DSURFACE9 ShadowSurface=NULL;
-		VPORT1->GetRenderTarget( 0, &m_OrgRenderTarget );
+		device->GetRenderTarget( 0, &m_OrgRenderTarget );
 		m_Shadowmap->GetSurfaceLevel( 0, &ShadowSurface );
-		VPORT1->SetRenderTarget( 0, ShadowSurface );
+		device->SetRenderTarget( 0, ShadowSurface );
 		ReleaseCOM( ShadowSurface );
-		VPORT1->GetDepthStencilSurface( &m_OrgDepthSurf );
-		VPORT1->SetDepthStencilSurface( m_DepthSurf );
+		device->GetDepthStencilSurface( &m_OrgDepthSurf );
+		device->SetDepthStencilSurface( m_DepthSurf );
 	}
 	 else
 	{
-		VPORT1->SetDepthStencilSurface( m_OrgDepthSurf );
+		device->SetDepthStencilSurface( m_OrgDepthSurf );
 		ReleaseCOM( m_OrgDepthSurf );
-		VPORT1->SetRenderTarget( 0, m_OrgRenderTarget );
+		device->SetRenderTarget( 0, m_OrgRenderTarget );
 		ReleaseCOM( m_OrgRenderTarget );
 	}
 }
