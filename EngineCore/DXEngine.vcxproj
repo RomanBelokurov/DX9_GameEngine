@@ -155,6 +155,7 @@
     <ClInclude Include="Engine\D3D9Device.h" />
     <ClInclude Include="Engine\GraphicsClass.h" />
     <ClInclude Include="Engine\InputClass.h" />
+    <ClInclude Include="Engine\PlayerClass.h" />
     <ClInclude Include="Engine\PrimitivesClass.h" />
     <ClInclude Include="Engine\ResourceManager.h" />
     <ClInclude Include="Engine\SceneClass.h" />

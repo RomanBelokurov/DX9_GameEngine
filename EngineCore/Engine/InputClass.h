@@ -17,7 +17,7 @@ public:
 	InputClass();
 	~InputClass();
 
-	bool Initialize(HINSTANCE, HWND, int, int);
+	bool Initialize(HINSTANCE, HWND);
 	void Shutdown();
 	bool Update();
 
@@ -38,8 +38,6 @@ private:
 	unsigned char m_keyboardState[256];
 	DIMOUSESTATE m_mouseState;
 
-	int m_screenWidth, m_screenHeight;
-	
 	int m_mouseX, m_mouseY;
 	int m_mouseX_last, m_mouseY_last;
 	int m_mouse_dX, m_mouse_dY;	
@@ -56,14 +54,10 @@ InputClass::~InputClass()
 {
 }
 
-bool InputClass::Initialize(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight)
+bool InputClass::Initialize(HINSTANCE hinstance, HWND hwnd)
 {
 	HRESULT result;
 
-
-	// Store the screen size which will be used for positioning the mouse cursor.
-	m_screenWidth = screenWidth;
-	m_screenHeight = screenHeight;
 
 	// Initialize the location of the mouse on the screen.
 	m_mouseX = 0;

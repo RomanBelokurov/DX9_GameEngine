@@ -9,10 +9,7 @@
 #include "TimerClass.h"
 #include "GraphicsClass.h"
 #include "InputClass.h"
-
-#define MOVEMENT_SPEED 0.2f
-#define MOUSE_SENSITIVITY_X 0.1f
-#define MOUSE_SENSITIVITY_Y 0.1f
+#include "PlayerClass.h"
 
 class AppClass
 {	
@@ -39,9 +36,9 @@ private:
 	HWND m_hwnd;
 
 	GraphicsClass* m_Graphics;
-
 	TimerClass* m_Timer;
 	InputClass* m_Input;
+	PlayerClass* m_Player;
 
 private:
 	int screenWidth = 0;
@@ -59,6 +56,7 @@ AppClass::AppClass()
 	m_Graphics = 0;
 	m_Timer = 0;
 	m_Input = 0;
+	m_Player = 0;
 }
 
 AppClass::~AppClass()
@@ -77,7 +75,7 @@ bool AppClass::Initialize()
 		return false;
 
 	// Initialize the input object.
-	if(!m_Input->Initialize(m_hinstance, m_hwnd, screenWidth, screenHeight))
+	if(!m_Input->Initialize(m_hinstance, m_hwnd))
 		return false;
 
 
@@ -98,6 +96,13 @@ bool AppClass::Initialize()
 
 	// Initialize the timer object.
 	if(!m_Timer->Initialize())
+		return false;
+
+	// Player class intialize at camera position
+	D3DXVECTOR3 cameraPosition = m_Graphics->GetCamera()->GetPosition();
+	D3DXVECTOR3 cameraRotation = m_Graphics->GetCamera()->GetRotation();
+	m_Player = new PlayerClass(cameraPosition, cameraRotation);
+	if (!m_Player)
 		return false;
 
 	return true;
@@ -126,6 +131,12 @@ void AppClass::Shutdown()
 		m_Input->Shutdown();
 		delete m_Input;
 		m_Input = 0;
+	}
+
+	if (m_Player)
+	{
+		delete m_Player;
+		m_Player = 0;
 	}
 
 	// Shutdown the window.
@@ -206,73 +217,30 @@ bool AppClass::HandleInput(float frameTime)
 	D3DXVECTOR3 camPosition = m_Graphics->GetCamera()->GetPosition();
 	D3DXVECTOR3 camRotation = m_Graphics->GetCamera()->GetRotation();
 
+	keyDown = m_Input->IsKeyButtonPressed(DIK_A);
+	if (keyDown) m_Player->StrafeLeft(frameTime);
+
 	keyDown = m_Input->IsKeyButtonPressed(DIK_D);
-	if (keyDown)
-	{
-		//camPosition.x += frameTime * 0.1f;
-		float radians = (camRotation.y+90) * 0.0174532925f;
-		float movementSpeed = MOVEMENT_SPEED * frameTime;
-
-		// Update the position.
-		camPosition.x += sinf(radians) * movementSpeed;
-		camPosition.z += cosf(radians) * movementSpeed;
-	}
-
-	keyDown = m_Input->IsKeyButtonPressed(DIK_A);	
-	if (keyDown) {
-		//camPosition.x -= frameTime * 0.1f;
-		float radians = (camRotation.y + 90) * 0.0174532925f;
-		float movementSpeed = MOVEMENT_SPEED * frameTime;
-
-		// Update the position.
-		camPosition.x -= sinf(radians) * movementSpeed;
-		camPosition.z -= cosf(radians) * movementSpeed;
-	}
-
+	if (keyDown) m_Player->StrafeRight(frameTime);
+		
 	// Forward
 	keyDown = m_Input->IsKeyButtonPressed(DIK_W);
-	if (keyDown) {
-		float radians = camRotation.y * 0.0174532925f;
-		float movementSpeed = MOVEMENT_SPEED * frameTime;
-		
-		// Update the position.
-		camPosition.x += sinf(radians) * movementSpeed;
-		camPosition.z += cosf(radians) * movementSpeed;
-	}
+	if (keyDown) m_Player->MoveForward(frameTime);
 	
 	// Backward
 	keyDown = m_Input->IsKeyButtonPressed(DIK_S);
-	if (keyDown) {
-		// Convert degrees to radians.		
-		float radians = camRotation.y * 0.0174532925f;
-		float movementSpeed = MOVEMENT_SPEED * frameTime;
-
-		// Update the position.
-		camPosition.x -= sinf(radians) * movementSpeed;
-		camPosition.z -= cosf(radians) * movementSpeed;
-	}
+	if (keyDown) m_Player->MoveBackward(frameTime);
+	
 
 	int dx, dy;
 	m_Input->GetMouseLocationDiff(dx, dy);
-	if (dx != 0) 
-	{
-		camRotation.y += dx * MOUSE_SENSITIVITY_X * frameTime;
-		if (camRotation.y < 0.0f) camRotation.y -= 360.0f;
-	}
-
-	if (dy != 0)
-	{
-		camRotation.x += dy * MOUSE_SENSITIVITY_Y * frameTime;
-
-		if (camRotation.x > 90.0f) 
-			camRotation.x = 90.0f;
-
-		if (camRotation.x < -90.0f)
-			camRotation.x = -90.0f;
-	}
+	m_Player->LookAround(frameTime, dx, dy);
 	
-	m_Graphics->GetCamera()->SetPosition(camPosition.x, camPosition.y, camPosition.z);
-	m_Graphics->GetCamera()->SetRotation(camRotation.x, camRotation.y, camRotation.z);
+	D3DXVECTOR3 playerPosition = m_Player->GetPlayerPosition();
+	D3DXVECTOR3 playerRotation = m_Player->GetPlayerRotation();
+
+	m_Graphics->GetCamera()->SetPosition(playerPosition.x, playerPosition.y, playerPosition.z);
+	m_Graphics->GetCamera()->SetRotation(playerRotation.x, playerRotation.y, playerRotation.z);
 
 	return true;
 }
