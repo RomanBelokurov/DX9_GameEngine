@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(MSBuildStartupDirectory)\SDKs\SPESDK\lib;$(MSBuildStartupDirectory)\SDKs\DXSDK\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)SDKs\SPESDK\lib;$(SolutionDir)SDKs\DXSDK\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
   </PropertyGroup>
@@ -90,14 +90,15 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(MSBuildStartupDirectory)\SDKs\SPESDK\include;$(MSBuildStartupDirectory)\SDKs\DXSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)SDKs\SPESDK\include;$(SolutionDir)SDKs\DXSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,32 +146,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Application\Appclass.cpp" />
-    <ClCompile Include="Engine\Application\FrameTimer.cpp" />
-    <ClCompile Include="Engine\EngineCore\Driver_DX9.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Application\Appclass.h" />
-    <ClInclude Include="Engine\Application\FrameTimer.h" />
-    <ClInclude Include="Engine\EngineCore\Driver_DX9.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Camera.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Def.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_HUD.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Input.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Object.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Partsys.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Physics.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_PP_Bloom.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_QuadTree.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_ResMan.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_SaveLoad.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Sky.h" />
-    <ClInclude Include="Engine\EngineCore\LIGA_Terrain.h" />
-    <ClInclude Include="Engine\Player\Player.h" />
-    <ClInclude Include="Engine\Player\PlayerCamera.h" />
-    <ClInclude Include="Engine\Player\PlayerShoot.h" />
-    <ClInclude Include="Engine\Setup.h" />
+    <ClInclude Include="Engine\AppClass.h" />
+    <ClInclude Include="Engine\BoundingBox.h" />
+    <ClInclude Include="Engine\CameraClass.h" />
+    <ClInclude Include="Engine\D3D9Device.h" />
+    <ClInclude Include="Engine\GraphicsClass.h" />
+    <ClInclude Include="Engine\InputClass.h" />
+    <ClInclude Include="Engine\PrimitivesClass.h" />
+    <ClInclude Include="Engine\ResourceManager.h" />
+    <ClInclude Include="Engine\SceneClass.h" />
+    <ClInclude Include="Engine\SceneLoader.h" />
+    <ClInclude Include="Engine\SolidObject.h" />
+    <ClInclude Include="Engine\TextClass.h" />
+    <ClInclude Include="Engine\TimerClass.h" />
+    <ClInclude Include="Engine\FrustumClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
