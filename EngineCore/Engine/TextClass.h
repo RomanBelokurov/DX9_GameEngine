@@ -1,7 +1,7 @@
-#pragma once
-
 #ifndef __TEXT_CLASS_H__
 #define __TEXT_CLASS_H__
+#pragma once
+
 
 #include "d3dx9core.h"
 #include <string>

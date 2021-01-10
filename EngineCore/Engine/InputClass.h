@@ -1,7 +1,7 @@
-#pragma once
-
 #ifndef _INPUTCLASS_H_
 #define _INPUTCLASS_H_
+#pragma once
+
 
 #define DIRECTINPUT_VERSION 0x0800
 
@@ -9,12 +9,12 @@
 #pragma comment(lib, "dxguid.lib")
 
 #include	<dinput.h>
+#include "MessageBus.h"
 
-
-class InputClass
+class InputClass : public BusNode
 {
 public:
-	InputClass();
+	InputClass(MessageBus* messageBus);
 	~InputClass();
 
 	bool Initialize(HINSTANCE, HWND);
@@ -43,7 +43,7 @@ private:
 	int m_mouse_dX, m_mouse_dY;	
 };
 
-InputClass::InputClass()
+InputClass::InputClass(MessageBus* messageBus) : BusNode(messageBus)
 {
 	m_directInput = 0;
 	m_keyboard = 0;
@@ -169,6 +169,12 @@ bool InputClass::Update()
 
 	// Process the changes in the mouse and keyboard.
 	ProcessInput();
+
+
+	char msg[100];
+	snprintf(msg, sizeof(msg), "X:%d Y:%d", m_mouseX, m_mouseY);	
+	Message greeting(msg);
+	send(greeting);
 
 	return true;
 }

@@ -1,7 +1,7 @@
-#pragma once
-
 #ifndef __D3D9DEVICE__H__
 #define __D3D9DEVICE__H__
+#pragma once
+
 
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"winmm.lib")

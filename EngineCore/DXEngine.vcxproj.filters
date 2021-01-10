@@ -50,22 +50,19 @@
     <ClInclude Include="Engine\ResourceManager.h">
       <Filter>OldImplementations</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\SceneLoader.h">
-      <Filter>OldImplementations</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\TextClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\BoundingBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\SceneClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SolidObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\PlayerClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\MessageBus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\StaticObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,6 @@
-#pragma once
 #ifndef __PLAYER_CLASS_H_
 #define __PLAYER_CLASS_H_
+#pragma once
 
 #include	<d3dx9math.h>
 

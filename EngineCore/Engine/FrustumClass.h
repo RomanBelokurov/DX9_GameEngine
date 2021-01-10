@@ -1,6 +1,7 @@
-#pragma once
 #ifndef __FRUSTUM_PLANE__H__
 #define __FRUSTUM_PLANE__H__
+#pragma once
+
 
 #include	<d3dx9math.h>
 

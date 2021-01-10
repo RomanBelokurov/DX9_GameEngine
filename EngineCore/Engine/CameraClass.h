@@ -1,7 +1,6 @@
-#pragma once
-
 #ifndef __CAMERA__H__
 #define __CAMERA__H__
+#pragma once
 
 #include	<d3dx9math.h>
 

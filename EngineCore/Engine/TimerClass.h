@@ -1,5 +1,6 @@
 #ifndef _TIMERCLASS_H_
 #define _TIMERCLASS_H_
+#pragma once
 
 #include <windows.h>
 

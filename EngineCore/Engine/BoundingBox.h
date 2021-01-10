@@ -1,7 +1,7 @@
-#pragma once
-
 #ifndef _BOUNDINGBOX_H_
 #define _BOUNDINGBOX_H_
+#pragma once
+
 
 #include	<d3dx9math.h>
 

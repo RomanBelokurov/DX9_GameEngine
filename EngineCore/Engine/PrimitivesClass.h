@@ -1,7 +1,7 @@
-#pragma once
-
 #ifndef _PRIMITIVES_CLASS_H_
 #define _PRIMITIVES_CLASS_H_
+#pragma once
+
 
 #include	<d3dx9.h>
 #include	<d3d9.h>

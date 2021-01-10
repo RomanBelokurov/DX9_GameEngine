@@ -1,6 +1,6 @@
-#pragma once
 #ifndef __APPCLASS__
 #define __APPCLASS__
+#pragma once
 
 #include <tchar.h>
 #include <windows.h>
@@ -10,6 +10,7 @@
 #include "GraphicsClass.h"
 #include "InputClass.h"
 #include "PlayerClass.h"
+#include "MessageBus.h"
 
 class AppClass
 {	
@@ -40,6 +41,8 @@ private:
 	InputClass* m_Input;
 	PlayerClass* m_Player;
 
+	MessageBus* m_messageBus; // Message bus for components interaction
+	
 private:
 	int screenWidth = 0;
 	int screenHeight = 0;
@@ -57,6 +60,7 @@ AppClass::AppClass()
 	m_Timer = 0;
 	m_Input = 0;
 	m_Player = 0;
+	m_messageBus = 0;
 }
 
 AppClass::~AppClass()
@@ -69,8 +73,13 @@ bool AppClass::Initialize()
 	// Initialize the windows api.
 	InitializeWindow(screenWidth, screenHeight);
 
+	// Create message bus
+	m_messageBus = new MessageBus;
+	if (!m_messageBus)
+		return false;
+
 	// Create the input object.  This object will be used to handle reading the keyboard input from the user.
-	m_Input = new InputClass;
+	m_Input = new InputClass(m_messageBus);
 	if (!m_Input)
 		return false;
 
@@ -80,7 +89,7 @@ bool AppClass::Initialize()
 
 
 	// Create the graphics object.  This object will handle rendering all the graphics for this application.
-	m_Graphics = new GraphicsClass;
+	m_Graphics = new GraphicsClass(m_messageBus);
 	if (!m_Graphics)
 		return false;
 
@@ -147,7 +156,7 @@ void AppClass::Shutdown()
 
 bool AppClass::Update()
 {
-	m_Timer->Update();
+	m_Timer->Update();	
 
 	if(!m_Input->Update())
 		return false;
@@ -162,6 +171,9 @@ bool AppClass::Update()
 
 	if(!m_Graphics->Render())
 		return false;
+
+
+	m_messageBus->notify();
 
 	return true;
 }
@@ -209,7 +221,6 @@ void AppClass::Run()
 
 	return;
 }
-
 
 bool AppClass::HandleInput(float frameTime)
 {
